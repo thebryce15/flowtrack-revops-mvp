@@ -1,0 +1,21 @@
+## Quick‑Start: Data Quality Checks
+
+1. **Install dependencies**
+
+   ```bash
+   pip install -r requirements.txt
+Set database credentials (adapt values as needed)
+
+bash
+Copy
+# Linux / macOS
+export PGHOST=localhost
+export PGPORT=5432
+export PGDATABASE=flowtrack_data
+export PGUSER=postgres
+export PGPASSWORD=admin
+Run the full quality‑gate test suite and generate an HTML report
+
+bash
+Copy
+pytest --html=docs/reports/lite_QA_Q1-24.html --self-contained-html

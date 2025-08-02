@@ -1,0 +1,61 @@
+
+## Report from 01_generate_dimensions.py at 2025-07-19 20:24:26.676778 UTC
+
+[sales_reps]
+- row_count: 50
+- inactive_pct: 4.0
+
+[campaigns]
+- row_count: 70
+- evergreen_pct: 17.14
+
+[accounts]
+- row_count: 4020
+- dup_domain_pct: 8.08
+
+[contacts]
+- row_count: 8000
+- orphan_fk_pct: 0.0
+
+## Report from 02_generate_marketing.py at 2025-07-19 21:56:51.995258 UTC
+
+[marketing_spend]
+- row_count: 1500
+- media_rows: 471
+
+[leads]
+- row_count: 70000
+- pct_no_campaign: 9.92
+- pct_linked_account: 20.02
+- orphan_campaign_ratio: 9.92
+
+## Report from 03_generate_sales.py at 2025-07-20 23:01:52.594462 UTC
+
+[opportunities]
+- row_count: 6000
+- win_rate: 48.97
+- stale_next_step_pct: 12.0
+
+[sales_activities]
+- row_count: 80000
+- avg_touches_per_opp: 13.33
+
+## Report from 04_generate_customer_success.py at 2025-07-21 00:00:24.149627 UTC
+
+[customers]
+- row_count: 2000
+- churned_pct: 17.5
+
+[product_usage]
+- row_count: 208000
+
+[support_tickets]
+- row_count: 15000
+
+[nps_scores]
+- row_count: 3000
+- q4_24_avg: 7.83
+
+[churn_events]
+- row_count: 350
+- south_spike_pct: 22.29
