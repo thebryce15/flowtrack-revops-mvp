@@ -1,26 +1,22 @@
 import os
-import psycopg2
+import sys
+from pathlib import Path
+
 import pytest
 
-DEFAULT_SCHEMA = os.getenv("PGSCHEMA", "flowtrack_raw") 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from helpers.db import get_conn  # noqa: E402
+
+DEFAULT_SCHEMA = os.getenv("PGSCHEMA", "flowtrack_raw")
+
 
 @pytest.fixture(scope="session")
 def conn():
     """
-    Session‑scoped PostgreSQL connection fixture.
-
-    • Enables autocommit *before* any session commands to avoid the
-      “set_session cannot be used inside a transaction” error.
-    • Sets search_path so tests can use bare table names.
+    Session-scoped PostgreSQL connection fixture (env/.env via helpers.db).
+    Sets search_path so tests can use bare table names.
     """
-    conn = psycopg2.connect(
-        host=os.getenv("PGHOST", "localhost"),
-        port=int(os.getenv("PGPORT", 5432)),
-        dbname=os.getenv("PGDATABASE", "flowtrack_data"),
-        user=os.getenv("PGUSER", "postgres"),
-        password=os.getenv("PGPASSWORD", "admin"),
-    )
-    conn.autocommit = True                  
+    conn = get_conn()
     with conn.cursor() as cur:
         cur.execute(f"SET search_path TO {DEFAULT_SCHEMA}, public;")
     yield conn

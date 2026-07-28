@@ -7,13 +7,15 @@ FlowTrack – Fiscal‑Year KPI extractor (Task 5)
   and prints a markdown‑style summary table for quick eyeballing.
 """
 
-import os
 import pathlib
+import sys
 from textwrap import dedent
 
-import psycopg2
 import pandas as pd
 from tabulate import tabulate
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+from helpers.db import get_conn  # noqa: E402
 
 
 SQL_TEMPLATE = dedent(
@@ -32,7 +34,7 @@ SQL_TEMPLATE = dedent(
             COALESCE(SUM(amount_usd), 0)                   AS pipeline_bookings,
             AVG(amount_usd)                                AS avg_deal_size
         FROM flowtrack_analytics.vw_sales_pipeline
-        WHERE status = 'Won'
+        WHERE status = 'won'
           AND actual_close >= DATE '{year}-01-01'
           AND actual_close  < DATE '{next_year}-01-01'
 
@@ -66,17 +68,6 @@ SQL_TEMPLATE = dedent(
 OUT_DIR = pathlib.Path("data/processed")
 
 
-def get_conn():
-    """Create a PostgreSQL connection using standard PG* env‑vars."""
-    return psycopg2.connect(
-        host=os.getenv("PGHOST", "localhost"),
-        port=int(os.getenv("PGPORT", 5432)),
-        dbname=os.getenv("PGDATABASE", "flowtrack_data"),
-        user=os.getenv("PGUSER", "postgres"),
-        password=os.getenv("PGPASSWORD", "admin"),
-    )
-
-
 def kpis_for_year(conn, year: int) -> pd.DataFrame:
     """Return one‑row KPI DataFrame for the given fiscal year."""
     sql = SQL_TEMPLATE.format(year=year, next_year=year + 1)
@@ -90,13 +81,13 @@ def main() -> None:
         df_2023 = kpis_for_year(conn, 2023)
         df_2024 = kpis_for_year(conn, 2024)
 
-    # Save tidy CSVs
+    # Save tidy CSVs (per-FY + combined)
     df_2023.to_csv(OUT_DIR / "fy2023_kpis.csv", index=False)
     df_2024.to_csv(OUT_DIR / "fy2024_kpis.csv", index=False)
-
-    # Pretty summary
     df_all = pd.concat([df_2023, df_2024], ignore_index=True)
-    print("\nWrote:", OUT_DIR / "fy2023_kpis.csv", "and", OUT_DIR / "fy2024_kpis.csv")
+    df_all.to_csv(OUT_DIR / "fy_kpis_combined.csv", index=False)
+
+    print("\nWrote fy2023_kpis.csv, fy2024_kpis.csv, fy_kpis_combined.csv to", OUT_DIR)
     print("\nFiscal‑Year KPI Summary")
     print(tabulate(df_all, headers="keys", showindex=False, tablefmt="github"))
 

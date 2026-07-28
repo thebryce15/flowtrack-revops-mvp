@@ -8,7 +8,7 @@
      • Starting‑ARR  : ARR in force at 00:00 on 1‑Jan‑YYYY.
      • New‑ARR       : first‑ever subscription for a customer that starts in FY.
      • Expansion‑ARR : additional subscriptions (same customer) that start in FY.
-     • Churn‑ARR     : subscriptions that churn in FY, valued at their monthly_value * 12.
+     • Churn‑ARR     : ARR in force at the churn date, valued at monthly_value * 12.
      • ARR‑End       : ARR in force at 23:59 on 31‑Dec‑YYYY.
      • Net Retention % = (Starting‑ARR + Expansion‑ARR – Churn‑ARR) / Starting‑ARR * 100
                          (New‑ARR excluded by convention).
@@ -97,6 +97,8 @@ churn_arr AS (
     JOIN subs s
       ON s.customer_id = ce.customer_id
      AND s.start_date <= ce.churn_date
+     AND s.end_date   >= ce.churn_date   -- in force at churn; prevents fan-out
+                                         -- across a customer's earlier subs
     GROUP BY 1
 )
 

@@ -17,7 +17,7 @@ WITH spend_month AS (
     SELECT
         m.campaign_id,
         m.month::date         AS month,
-        SUM(m.amount)         AS spend_usd            -- <<< fixed
+        SUM(m.amount)         AS spend_usd
     FROM flowtrack_raw.marketing_spend m
     GROUP BY 1, 2
 ),

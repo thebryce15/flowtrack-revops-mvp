@@ -4,7 +4,7 @@ scripts/check_raw_integrity.py
 --------------------------------
 Sanity‑checks the FlowTrack *raw* layer:
 
-1. Verifies that all 13 expected tables exist in schema `flowtrack_raw`.
+1. Verifies that all 14 expected tables exist in schema `flowtrack_raw`.
 2. Confirms each table’s row count falls within a reference band.
 3. (Bonus) Flags orphaned rows for three critical FK relationships.
 
@@ -29,6 +29,7 @@ EXPECTED_TABLES = [
     "marketing_spend",
     "leads",
     "accounts",
+    "contacts",
     "opportunities",
     "sales_activities",
     "customers",
@@ -45,6 +46,7 @@ ROW_BANDS = {
     "marketing_spend": (1350, 1650),
     "leads": (63000, 77000),
     "accounts": (3600, 4400),
+    "contacts": (7200, 8800),
     "opportunities": (5400, 6600),
     "sales_activities": (72000, 88000),
     "customers": (1800, 2200),
@@ -58,6 +60,7 @@ ROW_BANDS = {
 
 FK_CHECKS = [
     # child_table, child_column, parent_table, parent_column
+    ("contacts", "account_id", "accounts", "account_id"),
     ("leads", "campaign_id", "campaigns", "campaign_id"),
     ("opportunities", "account_id", "accounts", "account_id"),
     ("subscriptions", "customer_id", "customers", "customer_id"),

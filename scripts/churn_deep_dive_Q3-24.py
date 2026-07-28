@@ -6,34 +6,25 @@ Creates:
     docs/reports/churn_reasons_q3_24.png
     docs/reports/churn_deep_dive_Q3-24.pdf
 
-Usage (PowerShell, venv active):
+Usage (venv active, .env configured — see README Quick Start):
 
-    pip install fpdf2 pandas sqlalchemy matplotlib psycopg2-binary
-    $env:FLOWTRACK_DB_URL = "postgresql+psycopg2://flow_admin:admin@localhost:5432/flowtrack_data"
     python scripts/churn_deep_dive_Q3-24.py
 """
 
-import os
 import pathlib
+import sys
 
 import matplotlib.pyplot as plt
 import pandas as pd
-import sqlalchemy as sa
 from fpdf import FPDF
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+from helpers.db import get_conn  # noqa: E402
 
 
 # 1.  Connect to PostgreSQL
 
-DB_URL = os.getenv("FLOWTRACK_DB_URL")  # e.g. postgresql+psycopg2://user:pass@host/db
-if not DB_URL:
-    raise RuntimeError(
-        "FLOWTRACK_DB_URL environment variable not set.\n"
-        "Example:\n"
-        "  $env:FLOWTRACK_DB_URL = "
-        "\"postgresql+psycopg2://flow_admin:admin@localhost:5432/flowtrack_data\""
-    )
-
-engine = sa.create_engine(DB_URL)
+conn = get_conn()
 
 
 # 2.  Pull South‑region churn events for Q3 2024
@@ -46,12 +37,16 @@ SELECT
     COALESCE(s.monthly_value,0) * 12 AS arr_lost
 FROM   flowtrack_raw.churn_events      AS ce
 LEFT   JOIN flowtrack_raw.subscriptions AS s
-           ON s.customer_id = ce.customer_id
+           ON  s.customer_id = ce.customer_id
+           AND s.start_date <= ce.churn_date
+           AND COALESCE(s.end_date, DATE '2999-12-31') >= ce.churn_date
+           -- ARR in force at the churn date only; a customer's earlier,
+           -- already-ended subscriptions must not inflate the loss figure.
 WHERE  ce.region = 'South'
   AND  ce.churn_date >= DATE '2024-07-01'
   AND  ce.churn_date <  DATE '2024-10-01';
 """
-df = pd.read_sql(QUERY, engine)
+df = pd.read_sql(QUERY, conn)
 
 if df.empty:
     raise SystemExit("No churn rows returned for South region in Q3 2024.")
@@ -76,6 +71,7 @@ fig, ax = plt.subplots()
 top["churn_count"].plot(kind="bar", ax=ax)
 ax.set_ylabel("Churned Customers")
 ax.set_title("Top 3 Churn Reasons - South Q3 2024")
+ax.tick_params(axis="x", rotation=0)  # horizontal labels; rotated ones clipped
 
 for bar, count in zip(ax.patches, top["churn_count"]):
     ax.annotate(str(count),
@@ -83,7 +79,7 @@ for bar, count in zip(ax.patches, top["churn_count"]):
                 ha="center", va="bottom", fontsize=9)
 
 fig.tight_layout()
-fig.savefig(chart_path, dpi=300)
+fig.savefig(chart_path, dpi=300, bbox_inches="tight")
 plt.close(fig)
 print(f"Saved chart → {chart_path}")
 

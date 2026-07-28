@@ -4,11 +4,12 @@
 
    Time key
    --------
-   week_idx = 1..104 sequential index
-              1  = ISO week 1 of 2023 (Mon 02-Jan-2023)
-              53 = ISO week 1 of 2024 (Mon 01-Jan-2024)
+   week_idx = 0..103 sequential index (as recorded in product_usage.week)
+              0 = the 7-day bucket starting Mon 02-Jan-2023.
+   Tickets and NPS are bucketed by day-arithmetic from the same anchor date,
+   NOT by ISO week number — all three series share one alignment.
 
-   MetrIcs
+   Metrics
    -------
      active_users_pct = active_users / logins * 100
      ticket_volume    = tickets opened that week
@@ -20,7 +21,7 @@ WITH usage_anchor AS (
     SELECT
         pu.customer_id,
         pu.week                                     AS week_idx,
-        (DATE '2023-01-02' + (pu.week - 1) * INTERVAL '7 days')::date
+        (DATE '2023-01-02' + pu.week * INTERVAL '7 days')::date
                                                    AS week_start,
         pu.active_users,
         pu.logins,
@@ -30,8 +31,7 @@ WITH usage_anchor AS (
 tickets_week AS (
     SELECT
         st.customer_id,
-        ((EXTRACT(year FROM st.created_at)::int - 2023) * 52
-         + EXTRACT(week FROM st.created_at)::int)     AS week_idx,
+        (st.created_at - DATE '2023-01-02') / 7       AS week_idx,
         COUNT(*)                                      AS ticket_volume
     FROM flowtrack_raw.support_tickets st
     GROUP BY 1, 2
@@ -44,8 +44,7 @@ nps_week AS (
     FROM (
         SELECT
             customer_id,
-            ((EXTRACT(year FROM date)::int - 2023) * 52
-             + EXTRACT(week FROM date)::int)         AS week_idx,
+            (date - DATE '2023-01-02') / 7           AS week_idx,
             date,
             score
         FROM flowtrack_raw.nps_scores
