@@ -1,0 +1,40 @@
+{
+  "name": "bryceos-precision-instrument",
+  "dataColors": ["#4786F7", "#2D5BE8", "#63719B", "#A1A1A6", "#294FA9", "#6FA0F9"],
+  "background": "#080917",
+  "foreground": "#CECED2",
+  "tableAccent": "#4786F7",
+  "textClasses": {
+    "title": { "fontColor": "#EDEFF4", "fontFace": "Sora", "fontSize": 14 },
+    "header": { "fontColor": "#EDEFF4", "fontFace": "Inter", "fontSize": 11 },
+    "label": { "fontColor": "#CECED2", "fontFace": "Inter", "fontSize": 10 },
+    "callout": { "fontColor": "#EDEFF4", "fontFace": "Sora", "fontSize": 32 }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "background": [{ "color": { "solid": { "color": "#101528" } }, "transparency": 0 }],
+        "border": [{ "show": true, "color": { "solid": { "color": "#233053" } }, "radius": 0 }],
+        "dropShadow": [{ "show": false }],
+        "visualHeader": [{ "show": false }],
+        "title": [{ "fontColor": { "solid": { "color": "#EDEFF4" } }, "fontFamily": "Inter", "fontSize": 11, "bold": true }],
+        "labels": [{ "color": { "solid": { "color": "#A1A1A6" } }, "fontFamily": "Inter", "fontSize": 9 }],
+        "categoryAxis": [{ "labelColor": { "solid": { "color": "#A1A1A6" } }, "gridlineShow": false, "fontFamily": "Inter", "fontSize": 9, "titleColor": { "solid": { "color": "#A1A1A6" } } }],
+        "valueAxis": [{ "labelColor": { "solid": { "color": "#A1A1A6" } }, "gridlineShow": true, "gridlineColor": { "solid": { "color": "#233053" } }, "gridlineStyle": "solid", "fontFamily": "Inter", "fontSize": 9, "titleColor": { "solid": { "color": "#A1A1A6" } } }],
+        "legend": [{ "labelColor": { "solid": { "color": "#CECED2" } }, "fontFamily": "Inter", "fontSize": 9 }]
+      }
+    },
+    "page": {
+      "*": {
+        "background": [{ "color": { "solid": { "color": "#080917" } }, "transparency": 0 }],
+        "outspace": [{ "color": { "solid": { "color": "#080917" } }, "transparency": 0 }]
+      }
+    },
+    "card": {
+      "*": {
+        "labels": [{ "color": { "solid": { "color": "#EDEFF4" } }, "fontFamily": "Sora", "fontSize": 28 }],
+        "categoryLabels": [{ "color": { "solid": { "color": "#A1A1A6" } }, "fontFamily": "Inter", "fontSize": 10 }]
+      }
+    }
+  }
+}
