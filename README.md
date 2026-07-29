@@ -61,8 +61,7 @@ flowtrack-revops-mvp/
 # 1 - clone & prepare env
 git clone https://github.com/thebryce15/flowtrack-revops-mvp.git
 cd flowtrack-revops-mvp
-python3.13 -m venv .venv && source .venv/bin/activate
-.venv\Scripts\Activate.ps1   # Windows PowerShell
+python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 
 # 2 - configure DB creds
@@ -72,17 +71,27 @@ createdb flowtrack_data     # or point to an existing db
 # 3 - load raw data
 python scripts/load_raw.py   # creates schemas, loads the 14 raw CSVs, builds constraints
 
-# 4 - run automated QA (5 sec)
+# 4 - build the analytic views
+bash scripts/create_views.sh
+
+# 5 - run automated QA (5 sec)
 pytest --html=docs/reports/lite_QA_Q1-24.html --self-contained-html
 
-# 5 - generate KPIs
-python scripts/get_fy_kpis.py   # writes two CSVs into data/processed/
-
-# 6 - (Option) rebuild analytic views after schema tweaks
-bash scripts/create_views.sh
+# 6 - generate KPIs
+python scripts/get_fy_kpis.py   # writes the FY23/FY24/combined CSVs into data/processed/
 ```
 
 *You should now be able to open the Power BI deck or PDFs in `dashboards/` and `docs/reports/`.*
+
+---
+
+## 🗃 Data provenance
+
+The 14 raw CSVs were produced by one‑off Faker‑based generator scripts that were
+not preserved; the committed files in `raw_csv/` are the canonical dataset, and
+`raw_csv/data_quality_report.txt` is the generation‑time QA log. The activity log
+was deduplicated after generation (13,238 exact double‑emitted rows removed);
+`scripts/check_raw_integrity.py` encodes the expected volumes.
 
 ---
 

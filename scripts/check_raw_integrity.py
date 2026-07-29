@@ -48,7 +48,7 @@ ROW_BANDS = {
     "accounts": (3600, 4400),
     "contacts": (7200, 8800),
     "opportunities": (5400, 6600),
-    "sales_activities": (72000, 88000),
+    "sales_activities": (60000, 73000),
     "customers": (1800, 2200),
     "subscriptions": (2700, 3300),
     "product_usage": (187000, 229000),
