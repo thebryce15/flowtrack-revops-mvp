@@ -1,0 +1,127 @@
+relationship 169773e2-f7ee-42b3-a097-2b617e086905
+	joinOnDateBehavior: datePartOnly
+	fromColumn: subscriptions.start_date
+	toColumn: LocalDateTable_1f8c684d-bbd3-4295-99c9-05b30c0f81e9.Date
+
+relationship 27c7d46a-87be-4c51-91fd-66a5f89dec2d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: subscriptions.end_date
+	toColumn: LocalDateTable_73955226-a31f-4f88-af2d-0824f74b59c7.Date
+
+relationship rel_funnel_campaign
+	fromColumn: marketing_funnel.campaign_id
+	toColumn: campaigns.campaign_id
+
+relationship rel_spend_campaign
+	fromColumn: marketing_spend.campaign_id
+	toColumn: campaigns.campaign_id
+
+relationship rel_subs_customer
+	fromColumn: subscriptions.customer_id
+	toColumn: customers.customer_id
+
+relationship rel_churn_customer
+	fromColumn: churn_events.customer_id
+	toColumn: customers.customer_id
+
+relationship rel_cshealth_customer
+	fromColumn: cs_health.customer_id
+	toColumn: customers.customer_id
+
+relationship rel_nps_customer
+	fromColumn: nps_scores.customer_id
+	toColumn: customers.customer_id
+
+relationship rel_tickets_customer
+	fromColumn: support_tickets.customer_id
+	toColumn: customers.customer_id
+
+relationship rel_activities_opportunity
+	fromColumn: sales_activities.opportunity_id
+	toColumn: sales_pipeline.opportunity_id
+
+relationship 392023dd-3941-45a1-8766-3eeb75390d27
+	joinOnDateBehavior: datePartOnly
+	fromColumn: campaigns.start_date
+	toColumn: LocalDateTable_8983a2ed-56ed-4698-b85f-7d1ed8cda6fc.Date
+
+relationship 4406f40b-5fe3-43fb-87c5-a0d803f6de93
+	joinOnDateBehavior: datePartOnly
+	fromColumn: campaigns.end_date
+	toColumn: LocalDateTable_f1ef6cbe-7f10-43cd-ad4f-50b72d95716f.Date
+
+relationship 944f542d-45ed-4621-9c04-00559a77d201
+	joinOnDateBehavior: datePartOnly
+	fromColumn: customers.onboard_date
+	toColumn: LocalDateTable_d4bcd6e1-6af2-475b-aa30-1a9bed263387.Date
+
+relationship 33bc3a71-8be5-49d6-9d9c-36502babb8b8
+	joinOnDateBehavior: datePartOnly
+	fromColumn: marketing_spend.month
+	toColumn: LocalDateTable_b33979aa-3e00-434f-b9a1-62bfe21c1623.Date
+
+relationship 711534f0-7b50-495c-8c85-594cef3f8175
+	joinOnDateBehavior: datePartOnly
+	fromColumn: churn_events.churn_date
+	toColumn: LocalDateTable_136102e5-8a0e-43d6-a7e2-0662e537893e.Date
+
+relationship 3e6494de-2d61-4ebf-962e-e6f75da1e23f
+	joinOnDateBehavior: datePartOnly
+	fromColumn: nps_scores.date
+	toColumn: LocalDateTable_ad6b704c-3524-4dd5-89de-aba26c11ea04.Date
+
+relationship cfa91e12-90da-4076-9974-e12d5da995ed
+	joinOnDateBehavior: datePartOnly
+	fromColumn: support_tickets.created_at
+	toColumn: LocalDateTable_e4e858a8-b993-492f-a083-208b7b4f5153.Date
+
+relationship 001fae3c-dd9e-449b-96e4-331d64245762
+	joinOnDateBehavior: datePartOnly
+	fromColumn: support_tickets.resolved_at
+	toColumn: LocalDateTable_dec4d9bc-98b2-4e58-b982-3e58a0b29af2.Date
+
+relationship 3f467591-3646-4b0e-8a58-0ff112e9b4f9
+	joinOnDateBehavior: datePartOnly
+	fromColumn: marketing_funnel.lead_created
+	toColumn: LocalDateTable_0e3e4c2c-2fa9-489f-aa71-4db9adc6b509.Date
+
+relationship 5de82e84-925f-41fb-901e-3944a2232f86
+	joinOnDateBehavior: datePartOnly
+	fromColumn: marketing_funnel.month
+	toColumn: LocalDateTable_e2aca545-76ee-4a3c-9a10-76b7f6623811.Date
+
+relationship ff4a3298-9384-4edd-a86e-ee40a885fb0c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: marketing_funnel.mql_date
+	toColumn: LocalDateTable_b3cdec00-eb50-489f-8dc8-543818dfb1d0.Date
+
+relationship 543d2289-f957-4d49-bf6c-e0bc3d00dd92
+	joinOnDateBehavior: datePartOnly
+	fromColumn: marketing_funnel.sql_date
+	toColumn: LocalDateTable_bcafc269-d9d9-40e7-85a2-6dba44464263.Date
+
+relationship 0291c317-c7e9-4dde-9c67-c7de8c0152f1
+	joinOnDateBehavior: datePartOnly
+	fromColumn: sales_pipeline.created_at
+	toColumn: LocalDateTable_2f292743-a15e-4d70-8148-8b87ed0fd2cc.Date
+
+relationship 9cb45cb8-6ca2-4b18-b916-3c41ddd3b325
+	joinOnDateBehavior: datePartOnly
+	fromColumn: sales_pipeline.next_step_date
+	toColumn: LocalDateTable_8b97137f-d758-48c2-b48e-beb9ff8b6c41.Date
+
+relationship a86f8ef8-7e85-4db8-bc78-d21adc5396da
+	joinOnDateBehavior: datePartOnly
+	fromColumn: sales_pipeline.actual_close
+	toColumn: LocalDateTable_f8d5c586-a86a-442e-9b36-b79e751e2f67.Date
+
+relationship 5641a7a3-1be7-4edb-8fe4-ed8e5959f9e7
+	joinOnDateBehavior: datePartOnly
+	fromColumn: sales_pipeline.rep_start_date
+	toColumn: LocalDateTable_8b8621a5-0cf3-4031-9c12-cc9cbb30836d.Date
+
+relationship b123817c-26f0-4b71-a937-aab0e78cfe01
+	joinOnDateBehavior: datePartOnly
+	fromColumn: cs_health.week_start
+	toColumn: LocalDateTable_b2a6e193-606f-404b-b560-3491f31d6e73.Date
+

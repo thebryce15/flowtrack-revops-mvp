@@ -1,0 +1,30 @@
+/// FY24 ARR bridge on a single basis (subscription starts/ends). Values are
+/// the verified canon; Ended = 38,742,529.08 + 40,641,703.92 - 69,302,723.88.
+table ARR_Bridge
+	lineageTag: ed5f4510-ce7e-4a3c-8df4-04c39bb3e4dd
+
+	column seq
+		isHidden
+		lineageTag: 1200be5e-b713-498c-9794-14842493bb9b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [seq]
+
+	column component
+		lineageTag: 8c95341c-5ff2-445b-a850-893fa00e41f5
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [component]
+		sortByColumn: seq
+
+	column delta
+		formatString: $#,0
+		lineageTag: eae423ab-16da-4352-9516-2c62c049d0b3
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [delta]
+
+	partition ARR_Bridge = calculated
+		mode: import
+		source = DATATABLE("seq", INTEGER, "component", STRING, "delta", DOUBLE, {{1, "FY23 exit ARR", 38742529.08}, {2, "Subscriptions started", 40641703.92}, {3, "Subscriptions ended", -10081509.12}})
+

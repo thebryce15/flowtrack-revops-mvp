@@ -1,0 +1,61 @@
+table nps_scores
+	lineageTag: f354acbb-02ce-4c2e-a145-779ec8a0af29
+
+	column nps_id
+		dataType: int64
+		lineageTag: c8d94163-cde1-4647-9645-e9091422ca9e
+		summarizeBy: sum
+		sourceColumn: nps_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_id
+		dataType: int64
+		lineageTag: f741bec7-bf4c-4d58-897a-573e6ebf09c7
+		summarizeBy: none
+		sourceColumn: customer_id
+
+	column date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 2781e878-2882-4432-95df-4a0d597f511b
+		summarizeBy: none
+		sourceColumn: date
+
+		variation Variation
+			isDefault
+			relationship: 3e6494de-2d61-4ebf-962e-e6f75da1e23f
+			defaultHierarchy: LocalDateTable_ad6b704c-3524-4dd5-89de-aba26c11ea04.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column score
+		dataType: double
+		lineageTag: d3d01388-7c77-4847-9ad1-d9db2ad73d2b
+		summarizeBy: sum
+		sourceColumn: score
+
+		annotation SummarizationSetBy = Automatic
+
+	column notes
+		dataType: string
+		lineageTag: 61318f3a-7de4-4c1e-b64e-ab1a9f577d97
+		summarizeBy: none
+		sourceColumn: notes
+
+	column survey_channel
+		dataType: string
+		lineageTag: 3df26aba-414f-464d-a599-e4a6d97fc01a
+		summarizeBy: none
+		sourceColumn: survey_channel
+
+	partition nps_scores = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataRoot & "\raw_csv\nps_scores.csv"),[Delimiter=",", Columns=6, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumnTypes(Headers,{{"nps_id", Int64.Type}, {"customer_id", Int64.Type}, {"date", type date}, {"score", type number}, {"notes", type text}, {"survey_channel", type text}})
+				in
+					Typed
+

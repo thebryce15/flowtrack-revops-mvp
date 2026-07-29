@@ -1,0 +1,52 @@
+table marketing_spend
+	lineageTag: e0d00556-dcad-4cb3-996b-aa0f3cc22cf7
+
+	column campaign_id
+		dataType: int64
+		lineageTag: 3eb931cb-ac2c-4333-89b8-391f1df02c8c
+		summarizeBy: none
+		sourceColumn: campaign_id
+
+	column month
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 70943859-a7c4-4f2a-9309-21100bbb6f39
+		summarizeBy: none
+		sourceColumn: month
+
+		variation Variation
+			isDefault
+			relationship: 33bc3a71-8be5-49d6-9d9c-36502babb8b8
+			defaultHierarchy: LocalDateTable_b33979aa-3e00-434f-b9a1-62bfe21c1623.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column channel_cost_type
+		dataType: string
+		lineageTag: 28623884-9f73-4a9f-8886-69041a1cca8e
+		summarizeBy: none
+		sourceColumn: channel_cost_type
+
+	column amount
+		dataType: double
+		formatString: $#,0
+		lineageTag: 83a72ba9-cd5e-4395-9add-b6977b4ddf01
+		summarizeBy: sum
+		sourceColumn: amount
+
+	column region
+		dataType: string
+		lineageTag: dcba106f-a576-4c14-b2d3-3ae60d7f45a4
+		summarizeBy: none
+		sourceColumn: region
+
+	partition marketing_spend = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataRoot & "\raw_csv\marketing_spend.csv"),[Delimiter=",", Columns=5, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumnTypes(Headers,{{"campaign_id", Int64.Type}, {"month", type date}, {"channel_cost_type", type text}, {"amount", type number}, {"region", type text}})
+				in
+					Typed
+

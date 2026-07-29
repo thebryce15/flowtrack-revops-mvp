@@ -1,0 +1,91 @@
+table support_tickets
+	lineageTag: 34316d9f-7db9-4093-8e28-82bdf449d115
+
+	column ticket_id
+		dataType: int64
+		lineageTag: 3be6babc-a28f-4e7e-b4fc-98d58318cd24
+		summarizeBy: sum
+		sourceColumn: ticket_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_id
+		dataType: int64
+		lineageTag: 48cf9102-0383-4e84-8248-e0184a8e896d
+		summarizeBy: none
+		sourceColumn: customer_id
+
+	column created_at
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 0bfa1555-d62b-4b94-b074-eacf075b1e8c
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variation
+			isDefault
+			relationship: cfa91e12-90da-4076-9974-e12d5da995ed
+			defaultHierarchy: LocalDateTable_e4e858a8-b993-492f-a083-208b7b4f5153.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column resolved_at
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 856efa17-7076-4fbd-bd67-1b28aed04938
+		summarizeBy: none
+		sourceColumn: resolved_at
+
+		variation Variation
+			isDefault
+			relationship: 001fae3c-dd9e-449b-96e4-331d64245762
+			defaultHierarchy: LocalDateTable_dec4d9bc-98b2-4e58-b982-3e58a0b29af2.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column category
+		dataType: string
+		lineageTag: ec5195e2-a7cd-47b7-b26b-b5c0dac0bfcb
+		summarizeBy: none
+		sourceColumn: category
+
+	column status
+		dataType: string
+		lineageTag: b93d048e-dbb8-48ba-a44e-0b4abae39d79
+		summarizeBy: none
+		sourceColumn: status
+
+	column cs_rep_id
+		dataType: int64
+		lineageTag: b3eea994-fd41-4f5d-9180-9e7be42658a1
+		summarizeBy: sum
+		sourceColumn: cs_rep_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_response_mins
+		dataType: int64
+		lineageTag: 7b190542-d050-404f-9ddc-a3b74dc8e104
+		summarizeBy: sum
+		sourceColumn: first_response_mins
+
+		annotation SummarizationSetBy = Automatic
+
+	column resolution_mins
+		dataType: int64
+		lineageTag: a8dab941-750a-4e70-82da-c453bd3faa73
+		summarizeBy: sum
+		sourceColumn: resolution_mins
+
+		annotation SummarizationSetBy = Automatic
+
+	partition support_tickets = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataRoot & "\raw_csv\support_tickets.csv"),[Delimiter=",", Columns=9, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumnTypes(Headers,{{"ticket_id", Int64.Type}, {"customer_id", Int64.Type}, {"created_at", type date}, {"resolved_at", type date}, {"category", type text}, {"status", type text}, {"cs_rep_id", Int64.Type}, {"first_response_mins", Int64.Type}, {"resolution_mins", Int64.Type}})
+				in
+					Typed
+

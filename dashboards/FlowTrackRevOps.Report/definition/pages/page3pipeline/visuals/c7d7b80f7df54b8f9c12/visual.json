@@ -1,0 +1,95 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "c7d7b80f7df54b8f9c12",
+  "position": {
+    "x": 24,
+    "y": 198,
+    "z": 0,
+    "height": 226,
+    "width": 608
+  },
+  "visual": {
+    "visualType": "clusteredColumnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "sales_pipeline"
+                    }
+                  },
+                  "Property": "Pipe Age Bucket"
+                }
+              },
+              "queryRef": "sales_pipeline.Pipe Age Bucket",
+              "nativeQueryRef": "Pipe Age Bucket"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Open Pipe $"
+                }
+              },
+              "queryRef": "_Measures.Open Pipe $",
+              "nativeQueryRef": "Open Pipe $"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "sales_pipeline"
+                  }
+                },
+                "Property": "Pipe Age Bucket"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Open pipe by age \u2014 $82.7M sits >180 days old'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

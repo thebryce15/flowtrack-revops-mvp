@@ -1,0 +1,55 @@
+table finance_overview
+	lineageTag: 3a47cfb2-8c82-4f6e-915c-c2dde3f3bd4e
+
+	column fiscal_year
+		dataType: int64
+		lineageTag: a9017762-cb5d-426e-9b2c-bb3288ae4a56
+		summarizeBy: none
+		sourceColumn: fiscal_year
+
+	column starting_arr
+		dataType: double
+		lineageTag: 25128004-7d7f-467d-acee-eaebb6a554d3
+		summarizeBy: sum
+		sourceColumn: starting_arr
+
+	column new_arr
+		dataType: double
+		lineageTag: 0d6d2de6-be8e-4e4a-a490-fd18122b9036
+		summarizeBy: sum
+		sourceColumn: new_arr
+
+	column expansion_arr
+		dataType: double
+		lineageTag: 0869d6e5-d032-4fd7-8c30-d43b02aa21b1
+		summarizeBy: sum
+		sourceColumn: expansion_arr
+
+	column churn_arr
+		dataType: double
+		lineageTag: 6bceb739-06ff-43e4-85f0-8f5ffcad2de9
+		summarizeBy: sum
+		sourceColumn: churn_arr
+
+	column arr_end
+		dataType: double
+		lineageTag: 470d158b-3cf2-4e7e-a9b1-65995f06c0ad
+		summarizeBy: sum
+		sourceColumn: arr_end
+
+	column net_retention_pct
+		dataType: double
+		lineageTag: 4f56ed2f-a8b6-49fa-9b35-72404856e7f9
+		summarizeBy: none
+		sourceColumn: net_retention_pct
+
+	partition finance_overview = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataRoot & "\data\processed\finance_overview.csv"),[Delimiter=",", Columns=7, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumnTypes(Headers,{{"fiscal_year", Int64.Type}, {"starting_arr", type number}, {"new_arr", type number}, {"expansion_arr", type number}, {"churn_arr", type number}, {"arr_end", type number}, {"net_retention_pct", type number}})
+				in
+					Typed
+

@@ -1,0 +1,53 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_ProTooling = ["DevMode"]
+
+annotation PBI_QueryOrder = ["finance_overview","subscriptions","DataRoot","campaigns","customers","marketing_spend","churn_events","nps_scores","support_tickets","sales_activities","marketing_funnel","sales_pipeline","cs_health"]
+
+ref table finance_overview
+ref table subscriptions
+ref table DateTableTemplate_e252f9b1-8041-4f3c-bc0d-02b4e57d3640
+ref table LocalDateTable_1f8c684d-bbd3-4295-99c9-05b30c0f81e9
+ref table LocalDateTable_73955226-a31f-4f88-af2d-0824f74b59c7
+ref table campaigns
+ref table customers
+ref table marketing_spend
+ref table churn_events
+ref table nps_scores
+ref table support_tickets
+ref table sales_activities
+ref table marketing_funnel
+ref table sales_pipeline
+ref table cs_health
+ref table _Measures
+ref table PlanVsActual
+ref table LocalDateTable_8983a2ed-56ed-4698-b85f-7d1ed8cda6fc
+ref table LocalDateTable_f1ef6cbe-7f10-43cd-ad4f-50b72d95716f
+ref table LocalDateTable_d4bcd6e1-6af2-475b-aa30-1a9bed263387
+ref table LocalDateTable_b33979aa-3e00-434f-b9a1-62bfe21c1623
+ref table LocalDateTable_136102e5-8a0e-43d6-a7e2-0662e537893e
+ref table LocalDateTable_ad6b704c-3524-4dd5-89de-aba26c11ea04
+ref table LocalDateTable_e4e858a8-b993-492f-a083-208b7b4f5153
+ref table LocalDateTable_dec4d9bc-98b2-4e58-b982-3e58a0b29af2
+ref table LocalDateTable_0e3e4c2c-2fa9-489f-aa71-4db9adc6b509
+ref table LocalDateTable_e2aca545-76ee-4a3c-9a10-76b7f6623811
+ref table LocalDateTable_b3cdec00-eb50-489f-8dc8-543818dfb1d0
+ref table LocalDateTable_bcafc269-d9d9-40e7-85a2-6dba44464263
+ref table LocalDateTable_2f292743-a15e-4d70-8148-8b87ed0fd2cc
+ref table LocalDateTable_8b97137f-d758-48c2-b48e-beb9ff8b6c41
+ref table LocalDateTable_f8d5c586-a86a-442e-9b36-b79e751e2f67
+ref table LocalDateTable_8b8621a5-0cf3-4031-9c12-cc9cbb30836d
+ref table LocalDateTable_b2a6e193-606f-404b-b560-3491f31d6e73
+ref table ARR_Bridge
+
+ref cultureInfo en-US
+

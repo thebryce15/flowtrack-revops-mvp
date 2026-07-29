@@ -1,0 +1,113 @@
+table cs_health
+	lineageTag: 2c011282-2815-4bee-99a2-c6c74d4b7d7c
+
+	column customer_id
+		dataType: int64
+		lineageTag: ee205e82-8bb8-4618-9430-769cbbc97b14
+		summarizeBy: none
+		sourceColumn: customer_id
+
+	column account_id
+		dataType: int64
+		lineageTag: 96683930-7930-4dd9-a14a-8397f7354592
+		summarizeBy: sum
+		sourceColumn: account_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column segment
+		dataType: string
+		lineageTag: 8750a6a2-c5a0-46c3-9e91-ffa6950452c2
+		summarizeBy: none
+		sourceColumn: segment
+
+	column status
+		dataType: string
+		lineageTag: cac78edb-9c28-4f37-a88f-bcc77d4cfd29
+		summarizeBy: none
+		sourceColumn: status
+
+	column week_idx
+		dataType: int64
+		lineageTag: 31d98831-6283-44a7-a392-f058a18e4c61
+		summarizeBy: sum
+		sourceColumn: week_idx
+
+		annotation SummarizationSetBy = Automatic
+
+	column week_start
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 850eb089-f7af-45b1-b5cc-a130e6347b44
+		summarizeBy: none
+		sourceColumn: week_start
+
+		variation Variation
+			isDefault
+			relationship: b123817c-26f0-4b71-a937-aab0e78cfe01
+			defaultHierarchy: LocalDateTable_b2a6e193-606f-404b-b560-3491f31d6e73.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column active_users
+		dataType: int64
+		lineageTag: 3702142f-08b5-47e2-a60a-aa7f3be707dc
+		summarizeBy: sum
+		sourceColumn: active_users
+
+	column logins
+		dataType: int64
+		lineageTag: 19aba6a4-3bca-437b-a406-f5e441c9b3d4
+		summarizeBy: sum
+		sourceColumn: logins
+
+	column workflows_run
+		dataType: int64
+		lineageTag: f3f9e980-54ce-4124-8784-f41cab821382
+		summarizeBy: sum
+		sourceColumn: workflows_run
+
+	column active_users_pct
+		dataType: double
+		lineageTag: 2a097c1f-6247-430b-9103-d59eb8049cec
+		summarizeBy: sum
+		sourceColumn: active_users_pct
+
+		annotation SummarizationSetBy = Automatic
+
+	column ticket_volume
+		dataType: int64
+		lineageTag: 7b51a1e6-e9eb-4be2-a1d4-1395cb822e62
+		summarizeBy: sum
+		sourceColumn: ticket_volume
+
+	column latest_nps_score
+		dataType: double
+		lineageTag: 934a6425-10e0-47cc-a8e1-c42e8b4490a6
+		summarizeBy: sum
+		sourceColumn: latest_nps_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column plan
+		dataType: string
+		lineageTag: f23e4a32-2103-4501-9730-0a6ae1d4b02a
+		summarizeBy: none
+		sourceColumn: plan
+
+	column monthly_value
+		dataType: double
+		lineageTag: 51982ac6-3a30-4a5c-8a75-3078cc5e2bb4
+		summarizeBy: sum
+		sourceColumn: monthly_value
+
+	partition cs_health = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataRoot & "\data\processed\cs_health.csv"),[Delimiter=",", Columns=14, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumnTypes(Headers,{{"customer_id", Int64.Type}, {"account_id", Int64.Type}, {"segment", type text}, {"status", type text}, {"week_idx", Int64.Type}, {"week_start", type date}, {"active_users", Int64.Type}, {"logins", Int64.Type}, {"workflows_run", Int64.Type}, {"active_users_pct", type number}, {"ticket_volume", Int64.Type}, {"latest_nps_score", type number}, {"plan", type text}, {"monthly_value", type number}})
+				in
+					Typed
+

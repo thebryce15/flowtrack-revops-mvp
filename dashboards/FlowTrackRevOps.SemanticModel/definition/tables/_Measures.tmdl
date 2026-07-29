@@ -1,0 +1,267 @@
+table _Measures
+	lineageTag: 35d7fc23-ba86-4476-a2ba-bfeccbffc283
+
+	/// Exec — page 1
+	measure 'Ending ARR FY24' = CALCULATE(MAX(finance_overview[arr_end]), finance_overview[fiscal_year] = 2024)
+		formatString: $#,0
+		lineageTag: aa90dde6-de34-4c7c-b7e6-488212c95027
+
+	measure 'Starting ARR FY24' = CALCULATE(MAX(finance_overview[starting_arr]), finance_overview[fiscal_year] = 2024)
+		formatString: $#,0
+		lineageTag: 0cf476ed-37b4-49d3-b1b0-f71d2d0424c9
+
+	measure 'ARR Growth %' = DIVIDE([Ending ARR FY24] - [Starting ARR FY24], [Starting ARR FY24])
+		formatString: 0.0%
+		lineageTag: 696b78eb-0b61-4561-b9e6-76a9c259fdf4
+
+	measure 'NDR FY24' = DIVIDE(CALCULATE(MAX(finance_overview[net_retention_pct]), finance_overview[fiscal_year] = 2024), 100)
+		formatString: 0.0%
+		lineageTag: df27c4e7-b019-487d-891c-3106fea15bbf
+
+	measure 'Plan ARR Exit FY24' = 70000000
+		formatString: $#,0
+		lineageTag: 41ee980f-58c4-4d89-a80a-8e84d1230541
+
+	measure 'Plan Attainment %' = DIVIDE([Ending ARR FY24], [Plan ARR Exit FY24])
+		formatString: 0.0%
+		lineageTag: dd3a01a5-7d3b-4b46-8bed-59483ec455fc
+
+	measure 'Started ARR FY24' = CALCULATE(SUMX(subscriptions, subscriptions[monthly_value] * 12), FILTER(subscriptions, YEAR(subscriptions[start_date]) = 2024))
+		formatString: $#,0
+		lineageTag: cd52e162-e133-4e1c-8e22-93fa39e1c891
+
+	measure 'Ended ARR FY24' = SUMX(FILTER(subscriptions, NOT ISBLANK(subscriptions[end_date]) && YEAR(subscriptions[end_date]) = 2024), subscriptions[monthly_value] * 12)
+		formatString: $#,0
+		lineageTag: 89996284-ef19-425f-b982-26305e0f65cd
+
+	measure 'Actual ARR (Month End)' =
+			VAR me = MAX(PlanVsActual[month_end])
+			RETURN
+				SUMX(
+					FILTER(
+						subscriptions,
+						subscriptions[start_date] <= me
+							&& (ISBLANK(subscriptions[end_date]) || subscriptions[end_date] > me)
+					),
+					subscriptions[monthly_value] * 12
+				)
+		formatString: $#,0
+		lineageTag: eb700e48-5263-49b7-accc-092d45e027fc
+
+	measure 'Plan ARR (Month End)' = MAX(PlanVsActual[plan_arr])
+		formatString: $#,0
+		lineageTag: 943b2233-31ec-4a37-906c-1fb03274dbd3
+
+	/// Pipeline — page 3
+	measure 'Bookings FY24' = CALCULATE(SUM(sales_pipeline[amount_usd]), FILTER(sales_pipeline, sales_pipeline[status] = "won" && NOT ISBLANK(sales_pipeline[actual_close]) && YEAR(sales_pipeline[actual_close]) = 2024))
+		formatString: $#,0
+		lineageTag: 0fd1d663-6344-43e3-b9e0-7ef297b63cd5
+
+	measure 'Avg Deal FY24' = CALCULATE(AVERAGE(sales_pipeline[amount_usd]), FILTER(sales_pipeline, sales_pipeline[status] = "won" && NOT ISBLANK(sales_pipeline[actual_close]) && YEAR(sales_pipeline[actual_close]) = 2024))
+		formatString: $#,0
+		lineageTag: e4449329-6369-4d8e-9ce6-277d6b0f188d
+
+	measure 'Won FY24' = CALCULATE(COUNTROWS(sales_pipeline), FILTER(sales_pipeline, sales_pipeline[status] = "won" && NOT ISBLANK(sales_pipeline[actual_close]) && YEAR(sales_pipeline[actual_close]) = 2024))
+		formatString: #,0
+		lineageTag: a3fb7248-ce9d-4499-aece-3b781a1ae09a
+
+	measure 'Lost FY24' = CALCULATE(COUNTROWS(sales_pipeline), FILTER(sales_pipeline, sales_pipeline[status] = "lost" && NOT ISBLANK(sales_pipeline[actual_close]) && YEAR(sales_pipeline[actual_close]) = 2024))
+		formatString: #,0
+		lineageTag: c681d888-4a8e-4ad2-b8b7-21b3818ddf6d
+
+	measure 'Win Rate FY24' = DIVIDE([Won FY24], [Won FY24] + [Lost FY24])
+		formatString: 0.0%
+		lineageTag: d394ed65-8e21-472f-a567-ed836f3d17b0
+
+	measure 'Open Pipe $' = CALCULATE(SUM(sales_pipeline[amount_usd]), sales_pipeline[status] = "open")
+		formatString: $#,0
+		lineageTag: 1311088d-d47e-4bc8-a363-b33e5612e97c
+
+	measure 'Open Pipe Fresh $' = CALCULATE(SUM(sales_pipeline[amount_usd]), FILTER(sales_pipeline, sales_pipeline[status] = "open" && sales_pipeline[created_at] >= DATE(2024,7,4)))
+		formatString: $#,0
+		lineageTag: b2eef73f-6adf-45d1-b3b2-7f35537469a6
+
+	measure 'Q1-25 Bookings Target' = 15000000
+		formatString: $#,0
+		lineageTag: b4532439-a98e-453c-9401-2111e5aae701
+
+	measure 'Raw Coverage' = DIVIDE([Open Pipe $], [Q1-25 Bookings Target])
+		formatString: 0.0"x"
+		lineageTag: 8567f824-1ed6-4594-a0d5-4b94c880ebed
+
+	measure 'Qualified Coverage' = DIVIDE([Open Pipe Fresh $], [Q1-25 Bookings Target])
+		formatString: 0.0"x"
+		lineageTag: afd2dd08-6534-4795-8a1e-c4d08c6b4772
+
+	measure 'Median Velocity Days' = MEDIANX(FILTER(sales_pipeline, sales_pipeline[status] = "won" && NOT ISBLANK(sales_pipeline[actual_close]) && YEAR(sales_pipeline[actual_close]) = 2024), DATEDIFF(sales_pipeline[created_at], sales_pipeline[actual_close], DAY))
+		formatString: #,0
+		lineageTag: 382db9fb-c66b-42ad-8c15-5e9ba7c79c9f
+
+	measure 'Touches per Won Deal' =
+			VAR won =
+				CALCULATETABLE(
+					VALUES(sales_pipeline[opportunity_id]),
+					FILTER(sales_pipeline, sales_pipeline[status] = "won" && NOT ISBLANK(sales_pipeline[actual_close]) && YEAR(sales_pipeline[actual_close]) = 2024)
+				)
+			RETURN
+				DIVIDE(
+					CALCULATE(COUNTROWS(sales_activities), TREATAS(won, sales_activities[opportunity_id])),
+					COUNTROWS(won)
+				)
+		formatString: 0.0
+		lineageTag: 243c6f50-4bef-40dd-8398-125ea4ba94e0
+
+	/// Marketing — page 2
+	measure Leads = COUNTROWS(marketing_funnel)
+		formatString: #,0
+		lineageTag: c64f9fc4-b05b-4b5d-9ab6-e1173d1b0184
+
+	measure MQLs = CALCULATE(COUNTROWS(marketing_funnel), marketing_funnel[mql_flag] = TRUE())
+		formatString: #,0
+		lineageTag: 35792640-7613-4e59-a0aa-bfd165240263
+
+	measure SQLs = CALCULATE(COUNTROWS(marketing_funnel), marketing_funnel[sql_flag] = TRUE())
+		formatString: #,0
+		lineageTag: dacef16b-3f85-4dda-88e7-d9a79467b697
+
+	measure 'Lead to MQL %' = DIVIDE([MQLs], [Leads])
+		formatString: 0.0%
+		lineageTag: 30a62416-3137-4946-9af4-72a212964968
+
+	measure 'MQL to SQL %' = DIVIDE([SQLs], [MQLs])
+		formatString: 0.0%
+		lineageTag: a1c3a898-4b51-40c2-9c68-59110627d813
+
+	measure 'SQLs FY24' = CALCULATE([SQLs], FILTER(marketing_funnel, YEAR(marketing_funnel[lead_created]) = 2024))
+		formatString: #,0
+		lineageTag: 3b5128bb-7126-4faa-aaa3-0c7897d1a2ca
+
+	measure 'SQLs FY23' = CALCULATE([SQLs], FILTER(marketing_funnel, YEAR(marketing_funnel[lead_created]) = 2023))
+		formatString: #,0
+		lineageTag: f890dc87-621e-48ba-9292-14e8f892ff2f
+
+	measure 'SQL Growth %' = DIVIDE([SQLs FY24] - [SQLs FY23], [SQLs FY23])
+		formatString: 0.0%
+		lineageTag: 08351c54-4185-406a-b4f6-42e5c035c7fd
+
+	measure 'Spend $' = SUM(marketing_spend[amount])
+		formatString: $#,0
+		lineageTag: afd95c14-cadc-4c46-af4c-8f32ec3f9d30
+
+	measure 'Cost per SQL' = DIVIDE([Spend $], [SQLs])
+		formatString: $#,0
+		lineageTag: 88e1904f-f7ce-4dbd-a2ec-45984cf15b38
+
+	/// Customer health — page 4
+	measure 'Renewal ARR Q1-25' =
+			SUMX(
+				FILTER(
+					subscriptions,
+					subscriptions[start_date] <= DATE(2024,12,31)
+						&& NOT ISBLANK(subscriptions[end_date])
+						&& subscriptions[end_date] >= DATE(2025,1,1)
+						&& subscriptions[end_date] < DATE(2025,4,1)
+				),
+				subscriptions[monthly_value] * 12
+			)
+		formatString: $#,0
+		lineageTag: da56145c-d440-499d-b030-62331b2ad2d0
+
+	measure 'Renewing Customers Q1-25' =
+			CALCULATE(
+				DISTINCTCOUNT(subscriptions[customer_id]),
+				FILTER(
+					subscriptions,
+					subscriptions[start_date] <= DATE(2024,12,31)
+						&& NOT ISBLANK(subscriptions[end_date])
+						&& subscriptions[end_date] >= DATE(2025,1,1)
+						&& subscriptions[end_date] < DATE(2025,4,1)
+				)
+			)
+		formatString: #,0
+		lineageTag: f8965f35-c568-4942-951e-ca3d4a941da4
+
+	measure 'Flagged Renewals' = CALCULATE(COUNTROWS(customers), customers[Renewal Flag] = "FLAG")
+		formatString: #,0
+		lineageTag: 39ec340c-273d-4d7d-bdd9-2973631cd333
+
+	measure 'NPS FY24' = CALCULATE(AVERAGE(nps_scores[score]), FILTER(nps_scores, YEAR(nps_scores[date]) = 2024))
+		formatString: 0.0
+		lineageTag: a9df1a3e-9fc1-42d1-b2ef-69b75ed76335
+
+	measure 'Ticket Volume' = SUM(cs_health[ticket_volume])
+		formatString: #,0
+		lineageTag: 805ef612-8e51-4818-93aa-0bac3bec92f5
+
+	measure 'Customer Churn %' = DIVIDE(CALCULATE(COUNTROWS(customers), customers[status] = "churned"), COUNTROWS(customers))
+		formatString: 0.0%
+		lineageTag: f25d51b8-e702-4fca-9e29-bcc3bb439f7f
+
+	/// Churn — page 5
+	measure 'Churn Events' = COUNTROWS(churn_events)
+		formatString: #,0
+		lineageTag: c9eddfd9-914f-41b8-ab97-b99e937bda83
+
+	measure 'Churned Customers S Q3' = CALCULATE(DISTINCTCOUNT(churn_events[customer_id]), FILTER(churn_events, churn_events[region] = "South" && churn_events[churn_date] >= DATE(2024,7,1) && churn_events[churn_date] < DATE(2024,10,1)))
+		formatString: #,0
+		lineageTag: c43d26e8-f3e8-4c8e-b8e8-9555ee660572
+
+	measure 'ARR Lost S Q3' =
+			SUMX(
+				FILTER(
+					churn_events,
+					churn_events[region] = "South"
+						&& churn_events[churn_date] >= DATE(2024,7,1)
+						&& churn_events[churn_date] < DATE(2024,10,1)
+				),
+				VAR cd = churn_events[churn_date]
+				VAR cid = churn_events[customer_id]
+				RETURN
+					SUMX(
+						FILTER(
+							ALL(subscriptions),
+							subscriptions[customer_id] = cid
+								&& subscriptions[start_date] <= cd
+								&& (ISBLANK(subscriptions[end_date]) || subscriptions[end_date] >= cd)
+						),
+						subscriptions[monthly_value] * 12
+					)
+			)
+		formatString: $#,0
+		lineageTag: 30587a24-241e-40bd-badf-3c600def4c48
+
+	measure 'Churn ARR FY24' = CALCULATE(MAX(finance_overview[churn_arr]), finance_overview[fiscal_year] = 2024)
+		formatString: $#,0
+		lineageTag: 26590b5a-7e60-4ea1-83b2-7564a5a93097
+
+	measure 'Open Opps Fresh' = CALCULATE(COUNTROWS(sales_pipeline), FILTER(sales_pipeline, sales_pipeline[status] = "open" && sales_pipeline[created_at] >= DATE(2024,7,4)))
+		formatString: #,0
+		lineageTag: 4e4fa6af-3cba-4c82-bd3a-856513a3eee3
+
+	measure 'Avg NPS Panel' = AVERAGE(cs_health[latest_nps_score])
+		formatString: 0.0
+		lineageTag: 9c0e03c1-0395-470e-9cec-a2fcb468b96a
+
+	measure 'Churned Customers Q3-24' = CALCULATE(DISTINCTCOUNT(churn_events[customer_id]), FILTER(churn_events, churn_events[churn_date] >= DATE(2024,7,1) && churn_events[churn_date] < DATE(2024,10,1)))
+		formatString: #,0
+		lineageTag: 48e0af54-0680-4e65-b9c5-75fbe2010d50
+
+	measure 'Bridge Delta' = SUM(ARR_Bridge[delta])
+		formatString: $#,0
+		lineageTag: 6ee804b2-9b7e-4450-bd5d-0e68fc46eb52
+
+	measure 'Churn ARR (FY)' = SUM(finance_overview[churn_arr])
+		formatString: $#,0
+		lineageTag: 0e7be484-d636-4ed6-90d3-c04b5da627ae
+
+	column Value
+		isHidden
+		lineageTag: 4ea1f2ff-9b3c-4fc1-9d20-48e936815ea8
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Value]
+
+	partition _Measures = calculated
+		mode: import
+		source = {BLANK()}
+

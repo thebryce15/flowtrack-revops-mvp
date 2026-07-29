@@ -1,0 +1,118 @@
+table marketing_funnel
+	lineageTag: f6e4f6a4-9d6b-46a7-8666-fce25a3c0408
+
+	column lead_id
+		dataType: string
+		lineageTag: 7eb317dd-ed7c-4aba-89c9-bb110b0987c8
+		summarizeBy: none
+		sourceColumn: lead_id
+
+	column lead_created
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 5486c06f-5a86-4b25-8e31-b40fbff3c4f8
+		summarizeBy: none
+		sourceColumn: lead_created
+
+		variation Variation
+			isDefault
+			relationship: 3f467591-3646-4b0e-8a58-0ff112e9b4f9
+			defaultHierarchy: LocalDateTable_0e3e4c2c-2fa9-489f-aa71-4db9adc6b509.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column utm_source
+		dataType: string
+		lineageTag: c2ef33f1-d84d-4ff2-b459-9e318b694edc
+		summarizeBy: none
+		sourceColumn: utm_source
+
+	column utm_medium
+		dataType: string
+		lineageTag: c9228d0d-390e-4a00-93a0-fbd6ce1266e8
+		summarizeBy: none
+		sourceColumn: utm_medium
+
+	column utm_campaign
+		dataType: string
+		lineageTag: 6fcfec12-c7c5-4587-a708-f458f857338f
+		summarizeBy: none
+		sourceColumn: utm_campaign
+
+	column campaign_id
+		dataType: int64
+		lineageTag: c3d0d802-2a6b-47cc-995e-841f5306a239
+		summarizeBy: none
+		sourceColumn: campaign_id
+
+	column month
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 7beaa941-1bd0-4348-a4a5-a3fdea04ce49
+		summarizeBy: none
+		sourceColumn: month
+
+		variation Variation
+			isDefault
+			relationship: 5de82e84-925f-41fb-901e-3944a2232f86
+			defaultHierarchy: LocalDateTable_e2aca545-76ee-4a3c-9a10-76b7f6623811.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column mql_flag
+		dataType: boolean
+		lineageTag: 5ff0a667-b0d4-4176-85dc-73b8ecddf14c
+		summarizeBy: none
+		sourceColumn: mql_flag
+
+	column sql_flag
+		dataType: boolean
+		lineageTag: 9f27681f-1ff8-4d20-a91a-2a3ee46a8a2d
+		summarizeBy: none
+		sourceColumn: sql_flag
+
+	column mql_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 77a14c11-279e-44f7-b57f-2de4e77bd1b0
+		summarizeBy: none
+		sourceColumn: mql_date
+
+		variation Variation
+			isDefault
+			relationship: ff4a3298-9384-4edd-a86e-ee40a885fb0c
+			defaultHierarchy: LocalDateTable_b3cdec00-eb50-489f-8dc8-543818dfb1d0.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column sql_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: a096f530-eeac-4dea-9817-e0eae72da0f7
+		summarizeBy: none
+		sourceColumn: sql_date
+
+		variation Variation
+			isDefault
+			relationship: 543d2289-f957-4d49-bf6c-e0bc3d00dd92
+			defaultHierarchy: LocalDateTable_bcafc269-d9d9-40e7-85a2-6dba44464263.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column spend_usd
+		dataType: double
+		lineageTag: 3242dc91-ddc1-463d-9b72-de3f8ac8cbb3
+		summarizeBy: sum
+		sourceColumn: spend_usd
+
+	partition marketing_funnel = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataRoot & "\data\processed\marketing_funnel.csv"),[Delimiter=",", Columns=12, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumnTypes(Headers,{{"lead_id", type text}, {"lead_created", type date}, {"utm_source", type text}, {"utm_medium", type text}, {"utm_campaign", type text}, {"campaign_id", type number}, {"month", type date}, {"mql_flag", type logical}, {"sql_flag", type logical}, {"mql_date", type date}, {"sql_date", type date}, {"spend_usd", type number}}),
+					Ints = Table.TransformColumnTypes(Typed,{{"campaign_id", Int64.Type}})
+				in
+					Ints
+

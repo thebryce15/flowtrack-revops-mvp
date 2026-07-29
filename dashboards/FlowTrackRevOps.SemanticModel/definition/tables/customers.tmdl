@@ -1,0 +1,99 @@
+table customers
+	lineageTag: 74cd51a3-2b1f-4b2b-9c46-3bc519949051
+
+	column customer_id
+		dataType: int64
+		lineageTag: 0d63b9cc-a2c1-4f3a-8872-e6de7a09d9de
+		summarizeBy: none
+		sourceColumn: customer_id
+
+	column account_id
+		dataType: int64
+		lineageTag: 3e1479b4-c47b-42e5-aad1-767831aaf26a
+		summarizeBy: sum
+		sourceColumn: account_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column onboard_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 096d7d78-369a-4d61-8946-f12d47b1a9bb
+		summarizeBy: none
+		sourceColumn: onboard_date
+
+		variation Variation
+			isDefault
+			relationship: 944f542d-45ed-4621-9c04-00559a77d201
+			defaultHierarchy: LocalDateTable_d4bcd6e1-6af2-475b-aa30-1a9bed263387.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column segment
+		dataType: string
+		lineageTag: c0e48f69-f179-4a33-877b-8cf180f448ce
+		summarizeBy: none
+		sourceColumn: segment
+
+	column status
+		dataType: string
+		lineageTag: f13ed3dc-42e5-4562-a5b7-5841bd672ee1
+		summarizeBy: none
+		sourceColumn: status
+
+	column 'Latest NPS' =
+			VAR t = RELATEDTABLE(nps_scores)
+			RETURN MAXX(TOPN(1, t, nps_scores[date], DESC), nps_scores[score])
+		dataType: double
+		lineageTag: e5feeb34-d6cf-4145-bce9-cd62b18bf12a
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Tickets Since Dec 1' = COUNTROWS(FILTER(RELATEDTABLE(support_tickets), support_tickets[created_at] >= DATE(2024,12,1)))
+		dataType: int64
+		lineageTag: 57d6e02b-eaac-4460-afdc-39bd8f6a4b3d
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Renewal ARR Q1 25' =
+			SUMX(
+				FILTER(
+					RELATEDTABLE(subscriptions),
+					subscriptions[start_date] <= DATE(2024,12,31)
+						&& NOT ISBLANK(subscriptions[end_date])
+						&& subscriptions[end_date] >= DATE(2025,1,1)
+						&& subscriptions[end_date] < DATE(2025,4,1)
+				),
+				subscriptions[monthly_value] * 12
+			)
+		dataType: double
+		formatString: $#,0
+		lineageTag: de921c02-e19d-4cd3-bbfa-0f7f64cdab99
+		summarizeBy: sum
+
+	column 'Renewal Flag' =
+			IF(
+				[Renewal ARR Q1 25] > 0
+					&& (
+						(NOT ISBLANK([Latest NPS]) && [Latest NPS] < 6)
+							|| COALESCE([Tickets Since Dec 1], 0) >= 2
+					),
+				"FLAG",
+				BLANK()
+			)
+		dataType: string
+		lineageTag: 8111aca5-7c18-4452-ab43-3b27bfdb3a6d
+		summarizeBy: none
+
+	partition customers = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataRoot & "\raw_csv\customers.csv"),[Delimiter=",", Columns=5, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumnTypes(Headers,{{"customer_id", Int64.Type}, {"account_id", Int64.Type}, {"onboard_date", type date}, {"segment", type text}, {"status", type text}})
+				in
+					Typed
+

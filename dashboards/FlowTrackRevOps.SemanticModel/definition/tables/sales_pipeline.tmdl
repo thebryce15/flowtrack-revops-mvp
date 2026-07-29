@@ -1,0 +1,179 @@
+table sales_pipeline
+	lineageTag: 6c3fb793-2c8f-4a57-8e28-0336173ef140
+
+	column opportunity_id
+		dataType: int64
+		lineageTag: 82207681-53e1-480a-9406-f6761d7b41a5
+		summarizeBy: none
+		sourceColumn: opportunity_id
+
+	column created_at
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 872e895d-a72e-41d5-8ab7-9b47bdfdd564
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variation
+			isDefault
+			relationship: 0291c317-c7e9-4dde-9c67-c7de8c0152f1
+			defaultHierarchy: LocalDateTable_2f292743-a15e-4d70-8148-8b87ed0fd2cc.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column account_id
+		dataType: int64
+		lineageTag: aa81d5f6-64af-4dd1-ab41-55f3da424ade
+		summarizeBy: sum
+		sourceColumn: account_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column account_name
+		dataType: string
+		lineageTag: 1a87b179-1915-4919-b009-72ba93c01dc9
+		summarizeBy: none
+		sourceColumn: account_name
+
+	column segment
+		dataType: string
+		lineageTag: 8fddb6e9-3dac-4e26-823a-b3538cb764fe
+		summarizeBy: none
+		sourceColumn: segment
+
+	column industry
+		dataType: string
+		lineageTag: b16f785e-9a5e-4ee2-a35f-210d6c13cd95
+		summarizeBy: none
+		sourceColumn: industry
+
+	column account_region
+		dataType: string
+		lineageTag: 7b286666-53ff-4f28-a1f2-fda92f1577b6
+		summarizeBy: none
+		sourceColumn: account_region
+
+	column amount_usd
+		dataType: double
+		formatString: $#,0
+		lineageTag: 254a22af-28da-4f04-8401-4c2b020c37b4
+		summarizeBy: sum
+		sourceColumn: amount_usd
+
+	column pipeline_stage
+		dataType: int64
+		lineageTag: 2076023a-e607-44ce-a744-f88afa1a642f
+		summarizeBy: sum
+		sourceColumn: pipeline_stage
+
+		annotation SummarizationSetBy = Automatic
+
+	column current_stage
+		dataType: string
+		lineageTag: b7bd53de-6099-4625-a2d8-8dd8eaf9ca0a
+		summarizeBy: none
+		sourceColumn: current_stage
+
+	column forecast_category
+		dataType: string
+		lineageTag: 80d9f028-83cc-4991-ab08-648a016c4b1b
+		summarizeBy: none
+		sourceColumn: forecast_category
+
+	column next_step_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: db58c819-a297-4265-ab9d-895247213fda
+		summarizeBy: none
+		sourceColumn: next_step_date
+
+		variation Variation
+			isDefault
+			relationship: 9cb45cb8-6ca2-4b18-b916-3c41ddd3b325
+			defaultHierarchy: LocalDateTable_8b97137f-d758-48c2-b48e-beb9ff8b6c41.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column status
+		dataType: string
+		lineageTag: 8c4b91c7-4553-4b08-bb93-02b648de3fe4
+		summarizeBy: none
+		sourceColumn: status
+
+	column actual_close
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 3088af18-45a5-44d0-81ba-2e5cad386655
+		summarizeBy: none
+		sourceColumn: actual_close
+
+		variation Variation
+			isDefault
+			relationship: a86f8ef8-7e85-4db8-bc78-d21adc5396da
+			defaultHierarchy: LocalDateTable_f8d5c586-a86a-442e-9b36-b79e751e2f67.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column loss_reason
+		dataType: string
+		lineageTag: b8defd44-4cae-4c45-85d4-6c70ad2c1138
+		summarizeBy: none
+		sourceColumn: loss_reason
+
+	column sales_rep_id
+		dataType: int64
+		lineageTag: 075c6621-6041-43cf-b71f-0fb19e246315
+		summarizeBy: sum
+		sourceColumn: sales_rep_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column rep_name
+		dataType: string
+		lineageTag: 5a4b24ef-d991-4a72-aa70-36a0b9fc3280
+		summarizeBy: none
+		sourceColumn: rep_name
+
+	column rep_email
+		dataType: string
+		lineageTag: 2336c7e5-6bd1-4518-a6ff-565c55f68b03
+		summarizeBy: none
+		sourceColumn: rep_email
+
+	column rep_region
+		dataType: string
+		lineageTag: 138ea860-05fc-4dad-904b-cad5e3f9d918
+		summarizeBy: none
+		sourceColumn: rep_region
+
+	column rep_start_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 3b544422-f31e-4deb-82e7-15f347e2e118
+		summarizeBy: none
+		sourceColumn: rep_start_date
+
+		variation Variation
+			isDefault
+			relationship: 5641a7a3-1be7-4edb-8fe4-ed8e5959f9e7
+			defaultHierarchy: LocalDateTable_8b8621a5-0cf3-4031-9c12-cc9cbb30836d.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Pipe Age Bucket' =
+			VAR d = DATEDIFF(sales_pipeline[created_at], DATE(2024,12,31), DAY)
+			RETURN SWITCH(TRUE(), d <= 90, "0-90d", d <= 180, "91-180d", ">180d")
+		dataType: string
+		lineageTag: cea90953-37d8-47ba-9bc4-cf4517284f4f
+		summarizeBy: none
+
+	partition sales_pipeline = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataRoot & "\data\processed\sales_pipeline.csv"),[Delimiter=",", Columns=20, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumnTypes(Headers,{{"opportunity_id", Int64.Type}, {"created_at", type date}, {"account_id", Int64.Type}, {"account_name", type text}, {"segment", type text}, {"industry", type text}, {"account_region", type text}, {"amount_usd", type number}, {"pipeline_stage", Int64.Type}, {"current_stage", type text}, {"forecast_category", type text}, {"next_step_date", type date}, {"status", type text}, {"actual_close", type date}, {"loss_reason", type text}, {"sales_rep_id", Int64.Type}, {"rep_name", type text}, {"rep_email", type text}, {"rep_region", type text}, {"rep_start_date", type date}})
+				in
+					Typed
+

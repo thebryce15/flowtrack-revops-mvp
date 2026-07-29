@@ -1,0 +1,35 @@
+/// Illustrative plan (labeled on-visual): $70.0M FY24 ARR exit, linear ramp
+/// from the FY23 exit ($38,742,529.08). Constants, disclosed in the spec.
+table PlanVsActual
+	lineageTag: a7a0a060-d46d-4551-9b3e-2c3313f9b9ca
+
+	column month_num
+		isHidden
+		lineageTag: 42ffacd0-5628-4da6-8236-f22dfa9fea66
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [month_num]
+
+	column month_end
+		formatString: yyyy-mm-dd
+		lineageTag: d7c6f5f0-b53c-431e-80ef-86204fc0f8ba
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [month_end]
+
+	column plan_arr
+		formatString: $#,0
+		lineageTag: d5cd7c8f-58f6-4227-93e7-98ec179fcf03
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [plan_arr]
+
+	partition PlanVsActual = calculated
+		mode: import
+		source =
+				ADDCOLUMNS(
+					SELECTCOLUMNS(GENERATESERIES(1, 12), "month_num", [Value]),
+					"month_end", EOMONTH(DATE(2024, [month_num], 1), 0),
+					"plan_arr", 38742529.08 + (70000000 - 38742529.08) * DIVIDE([month_num], 12)
+				)
+

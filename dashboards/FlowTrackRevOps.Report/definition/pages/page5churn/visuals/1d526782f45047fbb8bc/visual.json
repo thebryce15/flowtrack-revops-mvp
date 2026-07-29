@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "1d526782f45047fbb8bc",
+  "position": {
+    "x": 24,
+    "y": 50,
+    "z": 0,
+    "height": 20,
+    "width": 1100
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Exec \u00b7 quarterly \u00b7 the South Q3-24 anomaly: 48% of the quarter's churn in one region",
+                    "textStyle": {
+                      "fontFamily": "Inter",
+                      "fontSize": "9pt",
+                      "color": "#A1A1A6"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

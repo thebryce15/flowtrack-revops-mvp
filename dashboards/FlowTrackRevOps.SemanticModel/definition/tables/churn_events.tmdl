@@ -1,0 +1,59 @@
+table churn_events
+	lineageTag: 9d6881f6-8113-4845-93e5-5f144f5ab2fd
+
+	column churn_event_id
+		dataType: int64
+		lineageTag: 5773bcf7-3977-43bc-9187-d74b975a16ed
+		summarizeBy: sum
+		sourceColumn: churn_event_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_id
+		dataType: int64
+		lineageTag: e48064da-90eb-4921-b9e7-f069308dfee9
+		summarizeBy: none
+		sourceColumn: customer_id
+
+	column churn_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 3348adcf-6b38-4017-b068-4f64da50ad4a
+		summarizeBy: none
+		sourceColumn: churn_date
+
+		variation Variation
+			isDefault
+			relationship: 711534f0-7b50-495c-8c85-594cef3f8175
+			defaultHierarchy: LocalDateTable_136102e5-8a0e-43d6-a7e2-0662e537893e.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column region
+		dataType: string
+		lineageTag: 7ee1812b-2173-4dc9-89c4-572c1eece8eb
+		summarizeBy: none
+		sourceColumn: region
+
+	column segment
+		dataType: string
+		lineageTag: 7f45490f-9f0d-4942-b254-5d5638e8538e
+		summarizeBy: none
+		sourceColumn: segment
+
+	column reason
+		dataType: string
+		lineageTag: 62c68d47-587d-4e74-aa36-7ac214def905
+		summarizeBy: none
+		sourceColumn: reason
+
+	partition churn_events = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataRoot & "\raw_csv\churn_events.csv"),[Delimiter=",", Columns=6, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumnTypes(Headers,{{"churn_event_id", Int64.Type}, {"customer_id", Int64.Type}, {"churn_date", type date}, {"region", type text}, {"segment", type text}, {"reason", type text}})
+				in
+					Typed
+

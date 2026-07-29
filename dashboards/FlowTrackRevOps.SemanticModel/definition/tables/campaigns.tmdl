@@ -1,0 +1,65 @@
+table campaigns
+	lineageTag: 6679bf83-c7cd-4a21-ae18-937e23c270d3
+
+	column campaign_id
+		dataType: int64
+		lineageTag: 0c6905bd-cfd4-46fc-bc1f-281bf2450b64
+		summarizeBy: none
+		sourceColumn: campaign_id
+
+	column source
+		dataType: string
+		lineageTag: 80fd6b43-5e58-45cb-9bb8-6589c23f5a22
+		summarizeBy: none
+		sourceColumn: source
+
+	column start_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 5f527bd5-119e-4d3b-86df-af00db683939
+		summarizeBy: none
+		sourceColumn: start_date
+
+		variation Variation
+			isDefault
+			relationship: 392023dd-3941-45a1-8766-3eeb75390d27
+			defaultHierarchy: LocalDateTable_8983a2ed-56ed-4698-b85f-7d1ed8cda6fc.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column end_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: bf83c1f9-50a6-4cfa-8de1-80ff9b1bd6dc
+		summarizeBy: none
+		sourceColumn: end_date
+
+		variation Variation
+			isDefault
+			relationship: 4406f40b-5fe3-43fb-87c5-a0d803f6de93
+			defaultHierarchy: LocalDateTable_f1ef6cbe-7f10-43cd-ad4f-50b72d95716f.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column status
+		dataType: string
+		lineageTag: 29e382e8-7997-4b29-829e-f400ab91add4
+		summarizeBy: none
+		sourceColumn: status
+
+	column objective
+		dataType: string
+		lineageTag: 061b4303-1879-4385-a17e-815fc5109cb4
+		summarizeBy: none
+		sourceColumn: objective
+
+	partition campaigns = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataRoot & "\raw_csv\campaigns.csv"),[Delimiter=",", Columns=6, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumnTypes(Headers,{{"campaign_id", Int64.Type}, {"source", type text}, {"start_date", type date}, {"end_date", type date}, {"status", type text}, {"objective", type text}}, "en-US")
+				in
+					Typed
+

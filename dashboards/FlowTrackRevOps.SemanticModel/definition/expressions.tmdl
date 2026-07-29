@@ -1,0 +1,5 @@
+expression DataRoot = "C:\Users\bryce\dev\flowtrack-revops-mvp" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 3e8bc47c-77c9-460a-9dcf-ceb238dfd8fb
+
+	annotation PBI_ResultType = Text
+

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "26fa0ce44a7f4743bfa2",
+  "position": {
+    "x": 24,
+    "y": 12,
+    "z": 0,
+    "height": 40,
+    "width": 1000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "04 \u00b7 Which customers are we about to lose?",
+                    "textStyle": {
+                      "fontFamily": "Sora",
+                      "fontSize": "18pt",
+                      "color": "#EDEFF4",
+                      "fontWeight": "bold"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

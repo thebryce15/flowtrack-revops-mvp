@@ -1,0 +1,74 @@
+table sales_activities
+	lineageTag: d9c5ea7c-9ef3-4d03-820a-39907adb3acf
+
+	column activity_id
+		dataType: int64
+		lineageTag: a971bc71-f63d-4fff-b732-77bcb1ede7a5
+		summarizeBy: none
+		sourceColumn: activity_id
+
+	column opportunity_id
+		dataType: int64
+		lineageTag: 92e8e580-00ac-4570-a6b0-01d3186988b9
+		summarizeBy: none
+		sourceColumn: opportunity_id
+
+	column account_id
+		dataType: int64
+		lineageTag: 0376f280-a012-4612-97c1-e8b2e26f7b79
+		summarizeBy: none
+		sourceColumn: account_id
+
+	column rep_id
+		dataType: int64
+		lineageTag: 9ffaf621-ad7f-4179-a2ac-654d355f8bf2
+		summarizeBy: none
+		sourceColumn: rep_id
+
+	column type
+		dataType: string
+		lineageTag: b41f9dd8-2e59-4fae-85c6-179be27e54c2
+		summarizeBy: none
+		sourceColumn: type
+
+	column timestamp
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: c277f8a1-d6e8-412d-b9ab-edde16c4b008
+		summarizeBy: none
+		sourceColumn: timestamp
+
+	column outcome
+		dataType: string
+		lineageTag: 93576029-6002-4e20-9e00-b688988d574e
+		summarizeBy: none
+		sourceColumn: outcome
+
+	column notes
+		dataType: string
+		lineageTag: 179111b6-38fa-47a4-a767-c886cf2abbbd
+		summarizeBy: none
+		sourceColumn: notes
+
+	column sequence_id
+		dataType: int64
+		lineageTag: cd6089ca-7e37-4c0a-b7c9-9222336939f9
+		summarizeBy: none
+		sourceColumn: sequence_id
+
+	column sequence_step
+		dataType: int64
+		lineageTag: 7ddeadf1-411a-4363-b948-e3887c68b9bc
+		summarizeBy: none
+		sourceColumn: sequence_step
+
+	partition sales_activities = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataRoot & "\raw_csv\sales_activities.csv"),[Delimiter=",", Columns=10, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumnTypes(Headers,{{"activity_id", Int64.Type}, {"opportunity_id", Int64.Type}, {"account_id", Int64.Type}, {"rep_id", Int64.Type}, {"type", type text}, {"timestamp", type datetime}, {"outcome", type text}, {"notes", type text}, {"sequence_id", Int64.Type}, {"sequence_step", Int64.Type}})
+				in
+					Typed
+

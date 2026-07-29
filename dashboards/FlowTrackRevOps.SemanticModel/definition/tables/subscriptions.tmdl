@@ -1,0 +1,69 @@
+table subscriptions
+	lineageTag: 299f8248-f1dd-443b-a45f-6320b87b240e
+
+	column subscription_id
+		dataType: int64
+		lineageTag: 71eb9672-e89b-4b38-8625-b553352c860e
+		summarizeBy: sum
+		sourceColumn: subscription_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_id
+		dataType: int64
+		lineageTag: 9824d5ba-0371-4f91-af29-02ef50a1be65
+		summarizeBy: sum
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column plan
+		dataType: string
+		lineageTag: a48406db-5a98-4578-af45-08b5d5bf9617
+		summarizeBy: none
+		sourceColumn: plan
+
+	column start_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: c9d0da0f-8bb6-41fd-b036-56431afdbf7b
+		summarizeBy: none
+		sourceColumn: start_date
+
+		variation Variation
+			isDefault
+			relationship: 169773e2-f7ee-42b3-a097-2b617e086905
+			defaultHierarchy: LocalDateTable_1f8c684d-bbd3-4295-99c9-05b30c0f81e9.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column end_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: c4b014f5-c940-421d-b6cb-092c1c451777
+		summarizeBy: none
+		sourceColumn: end_date
+
+		variation Variation
+			isDefault
+			relationship: 27c7d46a-87be-4c51-91fd-66a5f89dec2d
+			defaultHierarchy: LocalDateTable_73955226-a31f-4f88-af2d-0824f74b59c7.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column monthly_value
+		dataType: double
+		lineageTag: 59cf66ba-8c0e-4abd-9ca3-080541383dba
+		summarizeBy: sum
+		sourceColumn: monthly_value
+
+	partition subscriptions = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataRoot & "\raw_csv\subscriptions.csv"),[Delimiter=",", Columns=6, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumnTypes(Headers,{{"subscription_id", Int64.Type}, {"customer_id", Int64.Type}, {"plan", type text}, {"start_date", type date}, {"end_date", type date}, {"monthly_value", type number}})
+				in
+					Typed
+
