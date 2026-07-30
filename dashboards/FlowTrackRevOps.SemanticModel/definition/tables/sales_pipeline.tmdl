@@ -166,6 +166,15 @@ table sales_pipeline
 		dataType: string
 		lineageTag: cea90953-37d8-47ba-9bc4-cf4517284f4f
 		summarizeBy: none
+		sortByColumn: 'Pipe Age Order'
+
+	column 'Pipe Age Order' =
+			VAR d = DATEDIFF(sales_pipeline[created_at], DATE(2024,12,31), DAY)
+			RETURN SWITCH(TRUE(), d <= 90, 1, d <= 180, 2, 3)
+		dataType: int64
+		isHidden
+		lineageTag: 9ba2f60f-a1fc-4a38-9a0e-69acf6d0137b
+		summarizeBy: none
 
 	partition sales_pipeline = m
 		mode: import

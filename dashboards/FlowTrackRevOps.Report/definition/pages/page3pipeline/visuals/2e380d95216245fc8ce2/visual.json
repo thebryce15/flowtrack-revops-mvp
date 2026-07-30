@@ -1,0 +1,59 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "2e380d95216245fc8ce2",
+  "position": {
+    "x": 648,
+    "y": 72,
+    "z": 0,
+    "height": 110,
+    "width": 296
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Win Rate FY24"
+                }
+              },
+              "queryRef": "_Measures.Win Rate FY24",
+              "nativeQueryRef": "Win Rate FY24"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Win rate · closed FY24'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

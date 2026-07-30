@@ -1,0 +1,59 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "ed89886fe5744adcb63c",
+  "position": {
+    "x": 648,
+    "y": 72,
+    "z": 0,
+    "height": 110,
+    "width": 296
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "MQL to SQL %"
+                }
+              },
+              "queryRef": "_Measures.MQL to SQL %",
+              "nativeQueryRef": "MQL to SQL %"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'MQL to SQL'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

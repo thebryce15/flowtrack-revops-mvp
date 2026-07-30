@@ -1,0 +1,59 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "1517ae8d9ed3416798e4",
+  "position": {
+    "x": 960,
+    "y": 72,
+    "z": 0,
+    "height": 110,
+    "width": 296
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "NPS FY24"
+                }
+              },
+              "queryRef": "_Measures.NPS FY24",
+              "nativeQueryRef": "NPS FY24"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Avg NPS · FY24, 1-10'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

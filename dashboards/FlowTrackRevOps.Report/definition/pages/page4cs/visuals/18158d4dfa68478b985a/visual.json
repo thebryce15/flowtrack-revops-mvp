@@ -1,0 +1,172 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "18158d4dfa68478b985a",
+  "position": {
+    "x": 24,
+    "y": 198,
+    "z": 0,
+    "height": 470,
+    "width": 608
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "customers"
+                    }
+                  },
+                  "Property": "customer_id"
+                }
+              },
+              "queryRef": "customers.customer_id",
+              "nativeQueryRef": "customer_id"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "customers"
+                    }
+                  },
+                  "Property": "segment"
+                }
+              },
+              "queryRef": "customers.segment",
+              "nativeQueryRef": "segment"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "customers"
+                    }
+                  },
+                  "Property": "Renewal ARR Q1 25"
+                }
+              },
+              "queryRef": "customers.Renewal ARR Q1 25",
+              "nativeQueryRef": "Renewal ARR Q1 25"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "customers"
+                    }
+                  },
+                  "Property": "Latest NPS"
+                }
+              },
+              "queryRef": "customers.Latest NPS",
+              "nativeQueryRef": "Latest NPS"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "customers"
+                    }
+                  },
+                  "Property": "Tickets Since Dec 1"
+                }
+              },
+              "queryRef": "customers.Tickets Since Dec 1",
+              "nativeQueryRef": "Tickets Since Dec 1"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Flagged renewal accounts — this week's call list'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "e2b27fc0f9184551bcce",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "customers"
+              }
+            },
+            "Property": "Renewal Flag"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "c",
+              "Entity": "customers",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "c"
+                          }
+                        },
+                        "Property": "Renewal Flag"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'FLAG'"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

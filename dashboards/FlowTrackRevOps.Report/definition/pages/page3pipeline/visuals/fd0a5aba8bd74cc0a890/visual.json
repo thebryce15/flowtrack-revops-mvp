@@ -1,0 +1,59 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "fd0a5aba8bd74cc0a890",
+  "position": {
+    "x": 336,
+    "y": 72,
+    "z": 0,
+    "height": 110,
+    "width": 296
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Qualified Coverage"
+                }
+              },
+              "queryRef": "_Measures.Qualified Coverage",
+              "nativeQueryRef": "Qualified Coverage"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Qualified coverage · fresh pipe only'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

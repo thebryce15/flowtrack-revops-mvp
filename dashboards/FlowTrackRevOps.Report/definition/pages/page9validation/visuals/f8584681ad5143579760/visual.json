@@ -1,0 +1,59 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "f8584681ad5143579760",
+  "position": {
+    "x": 24,
+    "y": 534,
+    "z": 0,
+    "height": 142,
+    "width": 232
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Renewing Customers Q1-25"
+                }
+              },
+              "queryRef": "_Measures.Renewing Customers Q1-25",
+              "nativeQueryRef": "Renewing Customers Q1-25"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'exp 73'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

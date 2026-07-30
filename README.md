@@ -8,7 +8,7 @@
 
 FlowTrack simulates the **Marketing → Sales → Customer‑Success** funnel of a SaaS firm for demonstration and interview purposes.  Starting from 14 raw CSVs, the project spins up a PostgreSQL database, automated data‑quality tests, fiscal‑year KPI extracts, and two presentation artifacts:
 
-1. **Year‑in‑Review deck** – 7 Power BI slides summarising FY‑2023 & 2024 business performance.
+1. **Revenue Operations instrument** – a 5‑page, decision‑first Power BI report built as a text‑based .pbip project (TMDL semantic model + PBIR pages), with a hidden validation page that ties every measure to independently verified figures.
 2. **South‑Region Churn Deep‑Dive** – a single‑page PDF analysing Q3‑2024 churn drivers.
 
 Everything is reproducible via the bash & Python commands in this repo; no manual number‑entry.
@@ -21,12 +21,13 @@ Everything is reproducible via the bash & Python commands in this repo; no manua
 | --------------------------------- | ---------------------------------------------- |
 | Automated QA HTML report          | `docs/reports/lite_QA_Q1-24.html`              |
 | KPI CSV extracts (FY 23/24)       | `data/processed/`                              |
-| Year‑in‑Review deck (PDF & .pbix) | `dashboards/YearInReview_2024.pdf`  /  `.pbix` |
+| RevOps instrument (Power BI project) | `dashboards/FlowTrackRevOps.pbip` + source dirs |
+| Instrument page captures | `docs/assets/instrument-0*.png` |
 | South‑churn deep‑dive slide       | `docs/reports/churn_deep_dive_Q3-24.pdf`       |
 
-*(Screenshots below come from the Year‑in‑Review deck)*
+*(The Revenue Operations instrument — exec, pipeline, and renewal pages)*
 
-<!-- montage refresh pending new dashboard -->
+<p align="center"><img src="docs/assets/montage.png" alt="FlowTrack Revenue Operations instrument — three of five pages" width="900"></p>
 
 ---
 
@@ -44,7 +45,7 @@ flowtrack-revops-mvp/
 │   └─ churn_deep_dive_Q3-24.py
 ├─ tests/                  # PyTest + pytest-html suite
 ├─ data/processed/         # Generated KPI CSVs
-├─ dashboards/             # Power BI deck (.pbix + PDF export)
+├─ dashboards/             # Power BI project (FlowTrackRevOps.pbip — TMDL + PBIR source)
 ├─ docs/
 │   ├─ reports/            # HTML + PDF outputs
 │   └─ assets/             # Screenshots / logos
@@ -81,7 +82,7 @@ pytest --html=docs/reports/lite_QA_Q1-24.html --self-contained-html
 python scripts/get_fy_kpis.py   # writes the FY23/FY24/combined CSVs into data/processed/
 ```
 
-*You should now be able to open the Power BI deck or PDFs in `dashboards/` and `docs/reports/`.*
+*You should now be able to open `dashboards/FlowTrackRevOps.pbip` in Power BI Desktop and refresh against your local data.*
 
 ---
 
@@ -112,7 +113,7 @@ was deduplicated after generation (13,238 exact double‑emitted rows removed);
 | Data loading & transform | Python 3.13 · pandas · SQLAlchemy                               |
 | Quality assurance        | PyTest · pytest‑html                                            |
 | Visualisation            | **Power BI** (desktop)                                          |
-| Reporting output         | PDF exports + static PNG montage                                |
+| Reporting output         | Power BI project (.pbip) + PNG page captures                    |
 
 ---
 

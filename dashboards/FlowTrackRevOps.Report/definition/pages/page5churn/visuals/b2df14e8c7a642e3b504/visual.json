@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "b2df14e8c7a642e3b504",
+  "position": {
+    "x": 24,
+    "y": 678,
+    "z": 0,
+    "height": 30,
+    "width": 560
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Data as of Dec 31, 2024 · synthetic dataset · illustrative plan labeled",
+                    "textStyle": {
+                      "fontFamily": "Inter",
+                      "fontSize": "8pt",
+                      "color": "#A1A1A6"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

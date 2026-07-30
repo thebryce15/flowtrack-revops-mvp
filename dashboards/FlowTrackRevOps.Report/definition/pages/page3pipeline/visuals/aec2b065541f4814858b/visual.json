@@ -1,0 +1,59 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "aec2b065541f4814858b",
+  "position": {
+    "x": 960,
+    "y": 72,
+    "z": 0,
+    "height": 110,
+    "width": 296
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Median Velocity Days"
+                }
+              },
+              "queryRef": "_Measures.Median Velocity Days",
+              "nativeQueryRef": "Median Velocity Days"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Median days · created to won'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/pagesMetadata/1.0.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/pagesMetadata/1.1.0/schema.json",
   "pageOrder": [
     "page1exec",
     "page2marketing",
@@ -8,5 +8,5 @@
     "page5churn",
     "page9validation"
   ],
-  "activePageName": "page1exec"
+  "activePageName": "page5churn"
 }
