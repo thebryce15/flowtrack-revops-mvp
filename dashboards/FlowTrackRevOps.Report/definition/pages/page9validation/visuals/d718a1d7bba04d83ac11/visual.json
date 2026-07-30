@@ -1,0 +1,59 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "d718a1d7bba04d83ac11",
+  "position": {
+    "x": 1016,
+    "y": 218,
+    "z": 0,
+    "height": 142,
+    "width": 232
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Qualified Coverage"
+                }
+              },
+              "queryRef": "_Measures.Qualified Coverage",
+              "nativeQueryRef": "Qualified Coverage"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'exp 2.0x'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

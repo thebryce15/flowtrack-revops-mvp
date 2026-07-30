@@ -1,0 +1,59 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "672e4e2d03dc4363a53d",
+  "position": {
+    "x": 520,
+    "y": 218,
+    "z": 0,
+    "height": 142,
+    "width": 232
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Open Pipe $"
+                }
+              },
+              "queryRef": "_Measures.Open Pipe $",
+              "nativeQueryRef": "Open Pipe $"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'exp 112,038,699'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

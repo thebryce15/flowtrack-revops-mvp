@@ -1,0 +1,59 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "cdb36a67f2d04092a2ac",
+  "position": {
+    "x": 272,
+    "y": 534,
+    "z": 0,
+    "height": 142,
+    "width": 232
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Flagged Renewals"
+                }
+              },
+              "queryRef": "_Measures.Flagged Renewals",
+              "nativeQueryRef": "Flagged Renewals"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'exp 15'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

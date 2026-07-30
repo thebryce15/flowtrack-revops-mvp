@@ -1,0 +1,59 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "660704b9e5a148deb27c",
+  "position": {
+    "x": 272,
+    "y": 60,
+    "z": 0,
+    "height": 142,
+    "width": 232
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "NDR FY24"
+                }
+              },
+              "queryRef": "_Measures.NDR FY24",
+              "nativeQueryRef": "NDR FY24"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'exp 81.5%'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

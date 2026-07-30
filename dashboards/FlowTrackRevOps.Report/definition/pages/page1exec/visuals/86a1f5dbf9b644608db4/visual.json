@@ -1,0 +1,114 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "86a1f5dbf9b644608db4",
+  "position": {
+    "x": 24,
+    "y": 198,
+    "z": 0,
+    "height": 470,
+    "width": 736
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PlanVsActual"
+                    }
+                  },
+                  "Property": "month_end"
+                }
+              },
+              "queryRef": "PlanVsActual.month_end",
+              "nativeQueryRef": "month_end",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Actual ARR (Month End)"
+                }
+              },
+              "queryRef": "_Measures.Actual ARR (Month End)",
+              "nativeQueryRef": "Actual ARR (Month End)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Plan ARR (Month End)"
+                }
+              },
+              "queryRef": "_Measures.Plan ARR (Month End)",
+              "nativeQueryRef": "Plan ARR (Month End)"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "dataPoint": [
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#63719B'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Measures.Plan ARR (Month End)"
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'ARR 2024 — actual vs illustrative plan ($70.0M exit, linear)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}
