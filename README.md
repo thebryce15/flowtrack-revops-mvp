@@ -1,6 +1,6 @@
 # FlowTrack RevOps Analytics MVP
 
-*A two‑day, end‑to‑end data pipeline and executive reporting package for a synthetic \$15 M‑ARR B2B SaaS company covering FY‑2023 & FY‑2024.*
+*An end‑to‑end data pipeline and executive reporting package for a synthetic B2B SaaS company built from zero to \$69M ARR across FY‑2023 & FY‑2024.*
 
 ---
 
